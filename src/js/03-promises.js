@@ -16,7 +16,7 @@ document.querySelector('.form').addEventListener('submit', e => {
   const delay = e.target.elements.delay.value;
   const step = e.target.elements.step.value;
   const amount = e.target.elements.amount.value;
-  for (let i = 0; i < amount; i++) {
+  for (let position = 0; position < amount; i++) {
     const promiseDelay = Number(delay) + Number(step) * i;
     createPromise(i, promiseDelay)
       .then(res => {
