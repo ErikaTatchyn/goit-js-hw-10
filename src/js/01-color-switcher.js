@@ -5,7 +5,7 @@ function getRandomHexColor() {
 function changeBackgroundColor() {
   document.body.style.backgroundColor = getRandomHexColor();
 }
-console.log(first);
+
 const stopBtn = document.querySelector('[data-stop]');
 const startBtn = document.querySelector('[data-start]');
 let intervalId;
