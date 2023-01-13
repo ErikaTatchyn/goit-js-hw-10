@@ -16,13 +16,13 @@ document.querySelector('.form').addEventListener('submit', e => {
   const delay = e.target.elements.delay.value;
   const step = e.target.elements.step.value;
   const amount = e.target.elements.amount.value;
-  for (let position = 0; position < amount; position++) {
+  for (let position = 1; position <= amount; position++) {
     const promiseDelay = Number(delay) + Number(step) * position;
-    createPromise(i, promiseDelay)
-      .then(res => {
+    createPromise(position, promiseDelay)
+      .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
-      .catch(error => {
+      .catch(({ position, delay }) => {
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       });
   }
