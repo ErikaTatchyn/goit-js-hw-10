@@ -16,8 +16,8 @@ document.querySelector('.form').addEventListener('submit', e => {
   const delay = e.target.elements.delay.value;
   const step = e.target.elements.step.value;
   const amount = e.target.elements.amount.value;
+  let promiseDelay = Number(delay);
   for (let position = 1; position <= amount; position++) {
-    const promiseDelay = Number(delay) + Number(step) * position;
     createPromise(position, promiseDelay)
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
@@ -25,5 +25,7 @@ document.querySelector('.form').addEventListener('submit', e => {
       .catch(({ position, delay }) => {
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       });
+    promiseDelay += +step;
   }
+  document.querySelector('.form').reset();
 });
