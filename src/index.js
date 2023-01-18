@@ -2,27 +2,31 @@ import './css/styles.css';
 import { fetchCountries } from './fetchCountries';
 const debounce = require('lodash.debounce');
 const DEBOUNCE_DELAY = 300;
+const searchInput = document.querySelector('#search-box');
+const countryList = document.querySelector('.country-list');
 
-const searchFormEl = document.querySelector('#search-box');
-const countryCardWrapperEl = document.querySelector('.country-info');
-
-const onSearchFormInput = event => {
-  event.preventDefault();
-
-  const searchedQuery = event.target.elements.user_country.value.trim();
-
-  fetchCountries(searchedQuery)
-    .then(data => {
-      console.log(data);
-
-      countryCardWrapperEl.innerHTML = createCountryCard(data);
-    })
-    .catch(err => {
-      if (err.message === '404') {
-        alert('Oops, there is no country with that name');
+const handleSearch = debounce(value => {
+  fetchCountries(value)
+    .then(countries => {
+      countryList.innerHTML = '';
+      for (let country of countries) {
+        console.log(country);
+        const li = document.createElement('li');
+        li.innerHTML = `
+        <h3>${country.name.official}</h3>
+        <p>Capital: ${country.capital}</p>
+        <p>Population: ${country.population}</p>
+        <img src=${
+          country.flags.svg
+        } alt=${`Flag of ${country.name.official}`} />
+        <p>Languages: ${Object.values(country.languages)}</p>
+      `;
+        countryList.appendChild(li);
       }
-    });
-};
+    })
+    .catch(error => console.log(error));
+}, DEBOUNCE_DELAY);
 
-const debouncedOnSearchFormInput = debounce(onSearchFormInput, DEBOUNCE_DELAY);
-searchFormEl.addEventListener('input', debouncedOnSearchFormInput);
+searchInput.addEventListener('input', e => {
+  handleSearch(e.target.value);
+});
