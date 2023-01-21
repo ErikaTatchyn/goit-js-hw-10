@@ -9,10 +9,12 @@ const countryList = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info');
 
 const handleSearch = debounce(value => {
+  value = value.trim();
   fetchCountries(value)
     .then(countries => {
+      console.log(countries);
       if (countries.length > 10) {
-        Notiflix.Notify.failure(
+        Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
         return;
@@ -35,24 +37,30 @@ const handleSearch = debounce(value => {
         for (let country of countries) {
           const li = document.createElement('li');
           li.innerHTML = `
-            <img src=${
-              country.flags.svg
-            } alt=${`Flag of ${country.name.official}`} width="50px" height="auto" />
+          <img src=${
+            country.flags.svg
+          } alt=${`Flag of ${country.name.official}`} width="50px" height="auto" />
             <span>${country.name.official}</span>
           `;
           countryList.appendChild(li);
         }
       } else {
+        Notiflix.Notify.info('Oops, there is no country with that name.');
         countryList.innerHTML = '';
         countryInfo.innerHTML = '';
-        Notiflix.Notify.Failure('Oops, there is no country with that name.');
       }
     })
     .catch(error => {
-      Notiflix.Notify.failure('Oops, there is no country with that name.');
+      Notiflix.Notify.info('Oops, there is no country with that name.');
+      countryList.innerHTML = '';
+      countryInfo.innerHTML = '';
     });
 }, DEBOUNCE_DELAY);
 
 searchInput.addEventListener('input', e => {
+  if (e.target.value.trim() === '') {
+    Notiflix.Notify.info('Please enter a valid name.');
+    return;
+  }
   handleSearch(e.target.value);
 });
