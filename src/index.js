@@ -45,13 +45,13 @@ const handleSearch = debounce(value => {
           countryList.appendChild(li);
         }
       } else {
-        Notiflix.Notify.info('Oops, there is no country with that name.');
+        Notiflix.Notify.failure('Oops, there is no country with that name.');
         countryList.innerHTML = '';
         countryInfo.innerHTML = '';
       }
     })
     .catch(error => {
-      Notiflix.Notify.info('Oops, there is no country with that name.');
+      Notiflix.Notify.failure('Oops, there is no country with that name.');
       countryList.innerHTML = '';
       countryInfo.innerHTML = '';
     });
