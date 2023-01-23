@@ -16,6 +16,8 @@ const handleSearch = debounce(value => {
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
+        countryList.innerHTML = '';
+        countryInfo.innerHTML = '';
         return;
       }
       if (countries.length === 1) {
@@ -59,6 +61,8 @@ const handleSearch = debounce(value => {
 searchInput.addEventListener('input', e => {
   if (e.target.value.trim() === '') {
     Notiflix.Notify.info('Please enter a valid name.');
+    countryList.innerHTML = '';
+    countryInfo.innerHTML = '';
     return;
   }
   handleSearch(e.target.value);
